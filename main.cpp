@@ -134,6 +134,28 @@ void main_application(void)
         setlinebuf(stdout);
 #endif 
 
+#if defined(CELLULAR_DEVICE) && (CELLULAR_DEVICE == GEMALTO_CINTERION)
+    // This needs to be moved under cellular stack (Gemalto-Cinterion)
+    DigitalOut power(D9, 0);
+    DigitalIn poweredup(D8);
+
+    /*
+    D9: A falling edge triggers the modem ON signal.
+    A low level (>3s) switches off the modem power supply.
+    Note: After the falling edge this signal should be
+    released within 1s in order to keep the modem running.
+    */
+
+    power.write(0);
+    wait(3); // low level for >3 seconds switches power off
+    power.write(1); // need a high signal to get a falling edge
+    wait_ms(250); // pause
+    power.write(0); // trigger a falling edge
+    wait_ms(250); // pause
+    power.write(1); // drive it high to keep it running
+    printf("Gemalto modem is powered %s\r\n", poweredup.read() ? "OFF" : "ON");
+#endif
+
     // Initialize trace-library first
     if (application_init_mbed_trace() != 0) {
         printf("Failed initializing mbed trace\n" );

@@ -2,7 +2,7 @@
   "config": {
     "button-pinname": {
       "help": "PinName for button.",
-      "value": "BUTTON1"
+      "value": "BUTTON3"
     },
     "developer-mode": {
       "help": "Enable Developer mode to skip Factory enrollment",
@@ -18,62 +18,54 @@
     },
     "mcc-no-auto-format": {
       "help": "If this is null autoformat will occur",
-      "options": [
-        null,
-        1
-      ],
       "value": null
-    },
-    "trace-level": {
-      "help": "Options are TRACE_LEVEL_ERROR,TRACE_LEVEL_WARN,TRACE_LEVEL_INFO,TRACE_LEVEL_DEBUG",
-      "macro_name": "MBED_TRACE_MAX_LEVEL",
-      "value": "TRACE_LEVEL_INFO"
     }
   },
   "macros": [
     "ARM_UC_USE_PAL_BLOCKDEVICE=1",
     "MBED_CLOUD_CLIENT_UPDATE_STORAGE=ARM_UCP_FLASHIAP_BLOCKDEVICE",
+    "MBED_CLIENT_DTLS_PEER_MAX_TIMEOUT=100000",
     "PAL_TLS_DEBUG_THRESHOLD=1",
-    "MBEDTLS_SSL_DEBUG_ALL=1"
+    "MBEDTLS_SSL_DEBUG_ALL=1",
+    "CELLULAR_DEVICE=GEMALTO_CINTERION",
+    "MDMTXD=D1",
+    "MDMRXD=D0",
+    "MDMRTS=D3",
+    "MDMCTS=D2"
   ],
   "target_overrides": {
     "*": {
-      "drivers.uart-serial-rxbuf-size": 1024,
-      "drivers.uart-serial-txbuf-size": 1024,
-      "esp8266.provide-default": true,
-      "esp8266.rx": "D0",
-      "esp8266.tx": "D1",
-      "esp8266.rts": "D2",
-      "esp8266.cts": "D3",
-      "events.shared-highprio-stacksize": 1536,
-      "events.shared-stacksize": 1536,
-      "mbed-client.event-loop-size": 1024,
-      "mbed-trace.enable": 0,
+      "mbed-client.event-loop-size": 2048,
+      "mbed-trace.enable": null,
       "nanostack-hal.event_loop_thread_stack_size": 8192,
-      "nsapi.default-wifi-password": "\"Password\"",
-      "nsapi.default-wifi-security": "WPA_WPA2",
-      "nsapi.default-wifi-ssid": "\"SSID\"",
+      "platform.default-serial-baud-rate": 115200,
       "platform.stdio-baud-rate": 115200,
       "platform.stdio-buffered-serial": true,
       "platform.stdio-convert-newlines": true,
-      "target.components_add": [
-        "SD"
-      ],
       "target.features_add": [
         "BOOTLOADER",
-        "STORAGE"
+        "STORAGE",
+        "LWIP"
       ],
       "update-client.storage-address": "(1024*1024*64)",
       "update-client.storage-locations": 1,
       "update-client.storage-size": "(1024*1024*2)"
     },
-    "K64F": {
-      "target.network-default-interface-type": "WIFI",
-      "update-client.application-details": "(40*1024)",
-      "update-client.bootloader-details": "0x00007188"
-    },
     "NRF52840_DK": {
+"nordic.uart_0_fifo_size": 120,
+"nordic.uart_1_fifo_size": 120,
+      "cellular.debug-at": 1,
       "client_app.primary_partition_size": 1048576,
+      "lwip.ethernet-enabled": false,
+      "lwip.ipv4-enabled": true,
+      "lwip.ipv6-enabled": true,
+      "lwip.mem-size": 22000,
+      "lwip.ppp-enabled": true,
+      "lwip.tcp-enabled": true,
+      "nsapi.default-cellular-apn": "\"NXTGENPHONE\"",
+      "nsapi.default-cellular-password": null,
+      "nsapi.default-cellular-sim-pin": "\"1234\"",
+      "nsapi.default-cellular-username": null,
       "target.OUTPUT_EXT": "hex",
       "target.app_offset": "0x3B400",
       "target.bootloader_img": "../tools/mbed-bootloader-NRF52840_DK.hex",
@@ -87,21 +79,12 @@
       "target.macros_remove": [
         "MBEDTLS_CONFIG_HW_SUPPORT"
       ],
-      "target.network-default-interface-type": "WIFI",
+      "target.network-default-interface-type": "CELLULAR",
       "update-client.application-details": "0x3B000",
-      "update-client.bootloader-details": "0x29C3C",
       "update-client.storage-address": "(1024*1024*1)",
+      "update-client.bootloader-details": "0x29C3C",
       "update-client.storage-locations": 1,
       "update-client.storage-size": "(1024*1024*1)"
-    },
-    "NUCLEO_F429ZI": {
-      "target.network-default-interface-type": "WIFI",
-      "update-client.application-details": "(0x08000000+64*1024)",
-      "update-client.bootloader-details": "0x080078CC"
-    },
-    "STM_EMAC": {
-      "lwip.mem-size": 12500,
-      "lwip.pbuf-pool-size": 16
     }
   }
 }
